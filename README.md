@@ -1,27 +1,30 @@
+<!-- Language switcher -->
+**English** · [Español](README.es.md)
+
 # custom-skills
 
-Repositorio propio de **skills para agentes de AI**. Objetivo: convertir los problemas comunes que el equipo enfrenta en el desarrollo asistido por AI en conocimiento versionado, reutilizable y compartible — en vez de que cada quien lo resuelva de cero en su cabeza o en su máquina.
+A personal repository of **AI agent skills**. Goal: turn the common problems the team hits during AI-assisted development into versioned, reusable, shareable knowledge — instead of each person solving it from scratch in their head or on their own machine.
 
-Este repo es la **fuente única de verdad** de las skills. Los proyectos que las usen (ej. el ERP) las consumen/sincronizan desde acá; no mantienen su propia copia divergente.
+This repo is the **single source of truth** for the skills. Projects that use them (e.g. the ERP) consume/sync from here; they do not keep their own diverging copy.
 
-## Estructura
+## Structure
 
 ```
-.agents/skills/<nombre>/
-├── SKILL.md          # requerido — frontmatter + guía
-├── assets/           # opcional — templates, schemas, ejemplos
-└── references/       # opcional — docs locales
+.agents/skills/<name>/
+├── SKILL.md          # required — frontmatter + guide
+├── assets/           # optional — templates, schemas, examples
+└── references/       # optional — local docs
 ```
 
-## Skills disponibles
+## Available skills
 
-| Skill | Para qué | Trigger |
+| Skill | What for | Trigger |
 |-------|----------|---------|
-| `psql-cli` | Dirigir al agente a usar el CLI de PostgreSQL (`psql`) de forma segura y no-interactiva: nunca abrir el REPL (cuelga), `ON_ERROR_STOP=1`, `PGPASSWORD` en vez de `-W`, output parseable, inspección de schema | El agente necesita correr `psql`, consultar Postgres desde la terminal, inspeccionar schema o scriptear SQL |
+| `psql-cli` | Guide the agent to use the PostgreSQL CLI (`psql`) safely and non-interactively: never open the REPL (it hangs), `ON_ERROR_STOP=1`, `PGPASSWORD` instead of `-W`, parseable output, schema inspection | The agent needs to run `psql`, query Postgres from the terminal, inspect schema, or script SQL |
 
-## Convenciones
+## Conventions
 
-- **Ubicación**: las skills viven en `.agents/skills/<nombre>/SKILL.md`, versionadas (viajan con el clone).
-- **Author**: `KritiusOne` en el frontmatter. NO usar el default `gentleman-programming` del template del skill-creator.
-- **allowed-tools**: declarar en el frontmatter para pre-autorizar binarios (ej. `Bash(psql:*)`).
-- **Naming**: skills genéricas usan el nombre de la tecnología (`psql-cli`, `playwright-cli`).
+- **Location**: skills live in `.agents/skills/<name>/SKILL.md`, versioned (they travel with the clone).
+- **Author**: `KritiusOne` in the frontmatter. Do NOT use the skill-creator template default `gentleman-programming`.
+- **allowed-tools**: declare in the frontmatter to pre-authorize binaries (e.g. `Bash(psql:*)`).
+- **Naming**: generic skills use the technology name (`psql-cli`, `playwright-cli`).
