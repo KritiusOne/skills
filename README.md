@@ -9,8 +9,10 @@ This repo is the **single source of truth** for the skills. Projects that use th
 
 ## Structure
 
+This repo is dedicated to skills — there is no app — so skills live at the root under `skills/`, not nested under `.agents/`.
+
 ```
-.agents/skills/<name>/
+skills/<name>/
 ├── SKILL.md          # required — frontmatter + guide
 ├── assets/           # optional — templates, schemas, examples
 └── references/       # optional — local docs
@@ -24,7 +26,7 @@ This repo is the **single source of truth** for the skills. Projects that use th
 
 ## Conventions
 
-- **Location**: skills live in `.agents/skills/<name>/SKILL.md`, versioned (they travel with the clone).
+- **Location**: skills live in `skills/<name>/SKILL.md`, versioned (they travel with the clone). When consumed by a project that uses the `.agents/skills/` layout (e.g. the ERP), the sync step maps `skills/<name>/` → that project's `.agents/skills/<name>/`.
 - **Author**: `KritiusOne` in the frontmatter. Do NOT use the skill-creator template default `gentleman-programming`.
 - **allowed-tools**: declare in the frontmatter to pre-authorize binaries (e.g. `Bash(psql:*)`).
 - **Naming**: generic skills use the technology name (`psql-cli`, `playwright-cli`).

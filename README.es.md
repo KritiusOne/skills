@@ -9,8 +9,10 @@ Este repo es la **fuente única de verdad** de las skills. Los proyectos que las
 
 ## Estructura
 
+Este repo está dedicado a skills — no hay app — así que las skills viven en el root bajo `skills/`, no anidadas en `.agents/`.
+
 ```
-.agents/skills/<nombre>/
+skills/<nombre>/
 ├── SKILL.md          # requerido — frontmatter + guía
 ├── assets/           # opcional — templates, schemas, ejemplos
 └── references/       # opcional — docs locales
@@ -24,7 +26,7 @@ Este repo es la **fuente única de verdad** de las skills. Los proyectos que las
 
 ## Convenciones
 
-- **Ubicación**: las skills viven en `.agents/skills/<nombre>/SKILL.md`, versionadas (viajan con el clone).
+- **Ubicación**: las skills viven en `skills/<nombre>/SKILL.md`, versionadas (viajan con el clone). Cuando las consume un proyecto que usa el layout `.agents/skills/` (ej. el ERP), el paso de sync mapea `skills/<nombre>/` → el `.agents/skills/<nombre>/` de ese proyecto.
 - **Author**: `KritiusOne` en el frontmatter. NO usar el default `gentleman-programming` del template del skill-creator.
 - **allowed-tools**: declarar en el frontmatter para pre-autorizar binarios (ej. `Bash(psql:*)`).
 - **Naming**: skills genéricas usan el nombre de la tecnología (`psql-cli`, `playwright-cli`).
