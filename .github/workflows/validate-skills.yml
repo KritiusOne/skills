@@ -1,0 +1,90 @@
+name: Validate Skills
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+# This workflow is NOT skippable via commit message flags.
+# Steps 1-4 (sync + 3 validators) are hard gates: any failure fails the build.
+# Step 5 (gh skill publish --dry-run) is best-effort (continue-on-error: true)
+# because the gh skill extension availability on hosted runners is not guaranteed.
+
+jobs:
+  validate:
+    name: Validate skills
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify Python version (>= 3.9 required)
+        run: python --version
+
+      - name: Sync skills to agent directories
+        run: python scripts/sync_skills.py
+
+      - name: Validate skill frontmatter (hard gate)
+        run: python scripts/validate_skills.py
+
+      - name: Security lint (hard gate)
+        run: python scripts/security_lint.py
+
+      - name: Check structure and sync integrity (hard gate)
+        run: python scripts/check_structure.py
+
+      - name: Check gh CLI availability and version (>= 2.90.0 required)
+        run: |
+          if ! command -v gh &>/dev/null; then
+            echo "::warning::gh CLI not found — gh-dependent steps will be skipped"
+            echo "GH_AVAILABLE=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          echo "GH_AVAILABLE=true" >> "$GITHUB_ENV"
+          GH_VERSION=$(gh --version 2>/dev/null | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+          echo "gh version: ${GH_VERSION}"
+          # Version comparison: require >= 2.90.0
+          # Split into major.minor.patch and compare numerically
+          IFS='.' read -r MAJOR MINOR PATCH <<< "${GH_VERSION:-0.0.0}"
+          MAJOR=${MAJOR:-0}; MINOR=${MINOR:-0}; PATCH=${PATCH:-0}
+          if [ "$MAJOR" -lt 2 ] || \
+             { [ "$MAJOR" -eq 2 ] && [ "$MINOR" -lt 90 ]; }; then
+            echo "::error::gh version ${GH_VERSION} is below the required minimum 2.90.0 — upgrade gh CLI"
+            exit 1
+          fi
+          echo "gh version check passed (${GH_VERSION} >= 2.90.0)"
+
+      - name: gh skill publish --dry-run (best-effort)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${GH_AVAILABLE}" != "true" ]; then
+            echo "::warning::gh CLI not available — skipping gh skill publish dry-run"
+            exit 0
+          fi
+
+          # Check if skill extension is available
+          if ! gh skill --help &>/dev/null 2>&1; then
+            echo "::warning::gh skill extension unavailable — skipping format dry-run (install via: gh extension install github/gh-skills)"
+            exit 0
+          fi
+
+          # Run dry-run for each skill
+          EXIT_CODE=0
+          for skill_dir in skills/*/; do
+            skill_name=$(basename "$skill_dir")
+            echo "--- dry-run: $skill_name ---"
+            if ! gh skill publish --dry-run "$skill_dir"; then
+              echo "::error::gh skill publish --dry-run failed for $skill_name"
+              EXIT_CODE=1
+            fi
+          done
+          exit $EXIT_CODE

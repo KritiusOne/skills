@@ -20,9 +20,33 @@ skills/<name>/
 
 ## Available skills
 
-| Skill | What for | Trigger |
-|-------|----------|---------|
-| `psql-cli` | Guide the agent to use the PostgreSQL CLI (`psql`) safely and non-interactively: never open the REPL (it hangs), `ON_ERROR_STOP=1`, `PGPASSWORD` instead of `-W`, parseable output, schema inspection | The agent needs to run `psql`, query Postgres from the terminal, inspect schema, or script SQL |
+| Skill | What for | When to use | Owner |
+|-------|----------|-------------|-------|
+| `psql-cli` | Guide the agent to use the PostgreSQL CLI (`psql`) safely and non-interactively: never open the REPL (it hangs), `ON_ERROR_STOP=1`, `PGPASSWORD` instead of `-W`, parseable output, schema inspection | When the agent needs to run `psql`, query Postgres from the terminal, inspect schema, or script SQL | @KritiusOne |
+
+## Installing a skill in your agent
+
+The directories `.agents/skills/` and `.claude/skills/` are **generated outputs** — never hand-edit them.
+After any change to `skills/`, regenerate them with:
+
+```bash
+python scripts/sync_skills.py
+```
+
+| Agent | Reads directory | Install command |
+|-------|-----------------|-----------------|
+| GitHub Copilot | `.agents/skills/` | `npx skills add KritiusOne/skills --skill psql-cli` |
+| opencode | `.agents/skills/` | `gh skill install KritiusOne/skills psql-cli` |
+| Claude Code | `.claude/skills/` | `gh skill install KritiusOne/skills psql-cli` |
+
+> **Note — Claude Code reads `.claude/skills/`, NOT `.agents/skills/`.**
+> The `gh skill install` command above copies the skill into `.claude/skills/` on your machine.
+> If you are consuming this repo as a source clone, run `python scripts/sync_skills.py` once
+> to populate both `.agents/skills/` and `.claude/skills/` locally.
+>
+> **Note — `npx skills add` flag shape:** the `--skill <name>` form is assumed based on the
+> `skills` npm package documentation. If your version uses a positional argument
+> (`npx skills add KritiusOne/skills psql-cli`), use that instead.
 
 ## Conventions
 

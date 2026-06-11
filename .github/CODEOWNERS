@@ -1,0 +1,11 @@
+# Default owner for all files
+* @KritiusOne
+
+# Skill-specific ownership
+/skills/psql-cli/ @KritiusOne
+
+# Scripts — any change to validation/sync logic requires owner review
+/scripts/ @KritiusOne
+
+# CI and governance
+/.github/ @KritiusOne

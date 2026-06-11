@@ -20,9 +20,33 @@ skills/<nombre>/
 
 ## Skills disponibles
 
-| Skill | Para qué | Trigger |
-|-------|----------|---------|
-| `psql-cli` | Dirigir al agente a usar el CLI de PostgreSQL (`psql`) de forma segura y no-interactiva: nunca abrir el REPL (cuelga), `ON_ERROR_STOP=1`, `PGPASSWORD` en vez de `-W`, output parseable, inspección de schema | El agente necesita correr `psql`, consultar Postgres desde la terminal, inspeccionar schema o scriptear SQL |
+| Skill | Para qué | Cuándo usarla | Owner |
+|-------|----------|---------------|-------|
+| `psql-cli` | Dirigir al agente a usar el CLI de PostgreSQL (`psql`) de forma segura y no-interactiva: nunca abrir el REPL (cuelga), `ON_ERROR_STOP=1`, `PGPASSWORD` en vez de `-W`, output parseable, inspección de schema | Cuando el agente necesita correr `psql`, consultar Postgres desde la terminal, inspeccionar schema o scriptear SQL | @KritiusOne |
+
+## Instalación de una skill en tu agente
+
+Los directorios `.agents/skills/` y `.claude/skills/` son **salidas generadas** — nunca los edites a mano.
+Después de cualquier cambio en `skills/`, regeneralos con:
+
+```bash
+python scripts/sync_skills.py
+```
+
+| Agente | Lee el directorio | Comando de instalación |
+|--------|-------------------|------------------------|
+| GitHub Copilot | `.agents/skills/` | `npx skills add KritiusOne/skills --skill psql-cli` |
+| opencode | `.agents/skills/` | `gh skill install KritiusOne/skills psql-cli` |
+| Claude Code | `.claude/skills/` | `gh skill install KritiusOne/skills psql-cli` |
+
+> **Nota — Claude Code lee `.claude/skills/`, NO `.agents/skills/`.**
+> El comando `gh skill install` de arriba copia la skill a `.claude/skills/` en tu máquina.
+> Si estás trabajando desde un clone del repo, corré `python scripts/sync_skills.py` una vez
+> para popular tanto `.agents/skills/` como `.claude/skills/` localmente.
+>
+> **Nota — forma de los flags de `npx skills add`:** se asume la forma `--skill <nombre>` según
+> la documentación del paquete `skills` en npm. Si tu versión usa argumento posicional
+> (`npx skills add KritiusOne/skills psql-cli`), usá esa forma.
 
 ## Convenciones
 

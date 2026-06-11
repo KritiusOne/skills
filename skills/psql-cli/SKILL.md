@@ -3,6 +3,8 @@ name: psql-cli
 description: >
   Guide any AI agent to use the PostgreSQL CLI (psql) safely and non-interactively from a shell.
   Trigger: When the agent needs to run psql, query a Postgres database from the terminal, inspect schema, or script SQL.
+  NOT for interactive REPL sessions, GUI database clients, ORMs, non-PostgreSQL databases, or any context where psql is not the intended execution path.
+allowed-tools: Bash(psql:*)
 license: Apache-2.0
 metadata:
   author: KritiusOne
@@ -86,6 +88,15 @@ psql --version                                  # confirm client is installed
 psql -X -c "SELECT version();" "$DATABASE_URL"  # confirm connectivity + server version
 psql -X -c "SELECT current_database(), current_user;" "$DATABASE_URL"
 ```
+
+## Resources
+
+| Resource | Type | Scope |
+|----------|------|-------|
+| `psql` binary | Shell | Bash(psql:*) — scoped, no other binaries |
+| PostgreSQL endpoint (host/port/database) | Network | Outbound TCP to whatever `$DATABASE_URL` / `-h` resolves to; no hardcoded endpoint |
+| `PGPASSWORD` environment variable | Secrets | Read-only at runtime; never written to files by this skill |
+| Local SQL files (`-f script.sql`) | File | Read-only input; skill never writes project files |
 
 ## Safety Checklist Before Writes
 
