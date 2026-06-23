@@ -3,6 +3,7 @@
 
 # Skill-specific ownership
 /skills/psql-cli/ @KritiusOne
+/skills/obsidian-vault/ @KritiusOne
 
 # Scripts — any change to validation/sync logic requires owner review
 /scripts/ @KritiusOne

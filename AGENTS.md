@@ -68,3 +68,4 @@ See `CONTRIBUTING.md` for the full add-a-skill workflow.
 | Skill | Para qué |
 |-------|----------|
 | `psql-cli` | Usar el CLI de PostgreSQL de forma segura y no-interactiva (sin REPL, `ON_ERROR_STOP=1`, `PGPASSWORD`, output parseable, inspección de schema). |
+| `obsidian-vault` | Gestionar notas en un vault de Obsidian: estructura fija (`knowledge/`, `tasks/`, `templates/`), naming `<YYYYMMDDHHmm>-<slug>.md`, frontmatter canónico, links, y helper `new_task.py` solo-stdlib (sin plugins). |

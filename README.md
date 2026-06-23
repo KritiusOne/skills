@@ -23,6 +23,7 @@ skills/<name>/
 | Skill | What for | When to use | Owner |
 |-------|----------|-------------|-------|
 | `psql-cli` | Guide the agent to use the PostgreSQL CLI (`psql`) safely and non-interactively: never open the REPL (it hangs), `ON_ERROR_STOP=1`, `PGPASSWORD` instead of `-W`, parseable output, schema inspection | When the agent needs to run `psql`, query Postgres from the terminal, inspect schema, or script SQL | @KritiusOne |
+| `obsidian-vault` | Manage notes in an Obsidian vault (plain-markdown folder): fixed structure (`knowledge/`, `tasks/`, `templates/`), task naming `<YYYYMMDDHHmm>-<slug>.md`, canonical frontmatter, `[[wiki]]`/`./relative.md` links, and a stdlib-only `new_task.py` helper — no plugin, fully offline | When creating, naming, or organizing notes/tasks in an Obsidian vault, writing task/knowledge frontmatter, wiring links, or bootstrapping a vault's templates/script | @KritiusOne |
 
 ## Installing a skill in your agent
 
